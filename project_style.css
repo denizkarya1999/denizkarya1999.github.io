@@ -1,0 +1,135 @@
+@keyframes example {
+    from {
+        background-color: white;
+    }
+
+    to {
+        background-color: #00509C;
+    }
+}
+body {
+    background-color: #00509C;
+    animation-name: example;
+    animation-duration: 4s;
+}
+#nav_bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#list {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'Segoe UI','Segoe UI', 'Segoe UI';
+}
+
+        li a:hover {
+            background-color: #111;
+        }
+            li a:hover:not(.project_active) {
+                background-color: #111;
+            }
+
+.project_active {
+    background-color: #00509C;
+}
+
+.center {
+    display: block;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    width: 50%;
+    height: auto;
+    width: auto;
+    max-width: 1024px;
+    max-height: 768px;
+}
+.center_2 {
+    display: block;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    width: 50%;
+    height: auto;
+    width: auto;
+    max-width: 1024px;
+    max-height: 768px;
+}
+
+.about {
+    text-align: left;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+    max-width: 1048px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.social {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+}
+.button_2 {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+}
+.xase {
+    text-align: center;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+}
+
+.copyright {
+    text-align: center;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+}
+
+.deniz {
+    font-family: 'Kristen ITC','Kristen ITC','Kristen ITC';
+    font-size: 16px;
+}

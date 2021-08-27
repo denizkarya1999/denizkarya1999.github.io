@@ -1,0 +1,65 @@
+@keyframes example {
+    from {
+        background-color: white;
+    }
+
+    to {
+        background-color: #00509C;
+    }
+}
+body {
+    background-color: #00509C;
+    animation-name: example;
+    animation-duration: 4s;
+}
+div {
+    padding: 50px;
+    font-family: 'Segoe UI','Segoe UI', 'Segoe UI';
+}
+#nav_bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#list {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'Segoe UI','Segoe UI', 'Segoe UI';
+}
+
+        li a:hover {
+            background-color: #111;
+        }
+            li a:hover:not(.resume_active) {
+                background-color: #111;
+            }
+
+.resume_active {
+    background-color: #00509C;
+}
+
+.copyright {
+    text-align: center;
+    font-family: 'Segoe UI', 'Segoe UI', 'Segoe UI';
+}
+
+.deniz {
+    font-family: 'Kristen ITC','Kristen ITC','Kristen ITC';
+    font-size: 16px;
+}
