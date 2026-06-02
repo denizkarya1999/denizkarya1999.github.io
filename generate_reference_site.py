@@ -13,7 +13,6 @@ PAGES = {
     "experience.html": ROOT / "Pages/Experience.razor",
     "academic.html": ROOT / "Pages/Projects/Academic.razor",
     "studio.html": ROOT / "Pages/Projects/Studio.razor",
-    "hackhathons.html": ROOT / "Pages/Projects/Hackathons.razor",
     "hackathons.html": ROOT / "Pages/Projects/Hackathons.razor",
     "personal.html": ROOT / "Pages/Projects/Personal.razor",
     "awards.html": ROOT / "Pages/Awards.razor",
@@ -28,7 +27,7 @@ NAV = [
     ("Experience", "experience.html"),
     ("Academic", "academic.html"),
     ("Studio", "studio.html"),
-    ("Hackhaton", "hackhathons.html"),
+    ("Hackathon", "hackathons.html"),
     ("Personal", "personal.html"),
     ("Awards", "awards.html"),
     ("Certificates", "certificates.html"),
@@ -48,9 +47,8 @@ ROUTES = {
     "Academic": "academic.html",
     "/studio": "studio.html",
     "Studio": "studio.html",
-    "/hackhathons": "hackhathons.html",
-    "Hackhathons": "hackhathons.html",
-    "Hackhatons": "hackhathons.html",
+    "/hackathons": "hackathons.html",
+    "Hackathons": "hackathons.html",
     "/personal": "personal.html",
     "Personal": "personal.html",
     "/awards": "awards.html",
@@ -77,6 +75,13 @@ def map_href(href: str) -> str:
     return href
 
 
+def map_asset(src: str) -> str:
+    asset_dirs = ("certificates/", "drawings/", "experience/", "index-slides/", "languages/", "projects/", "visits/")
+    if src.startswith(asset_dirs):
+        return f"assets/{src}"
+    return src
+
+
 def title_from(raw: str, fallback: str) -> str:
     match = re.search(r"<PageTitle>(.*?)</PageTitle>", raw, re.S)
     return re.sub(r"\s+", " ", match.group(1)).strip() if match else fallback
@@ -92,7 +97,7 @@ def remove_code_blocks(raw: str) -> str:
 
 
 def tag_to_img(tag: str, avatar: bool = False) -> str:
-    src = attr(tag, "Src") or attr(tag, "Image")
+    src = map_asset(attr(tag, "Src") or attr(tag, "Image"))
     alt = attr(tag, "Alt") or "Portfolio image"
     width = attr(tag, "Width")
     height = attr(tag, "Height")
@@ -245,6 +250,10 @@ def convert(raw: str) -> str:
         "Served as a reviewer for an ICNC conference paper.",
     )
     text = text.replace(
+        "Served as a reviewer for an ICNC conference paper.",
+        "Served as a reviewer for an ICNC conference paper.</li><li>Reviewed one journal paper for TMC.",
+    )
+    text = text.replace(
         "Submitted one journal article and one survey, both of which received revisions.",
         "Published one peer-reviewed journal article and one published survey.",
     )
@@ -270,8 +279,17 @@ def convert(raw: str) -> str:
     )
     text = text.replace(
         '<span class="ml-1">15 / 30 Credits</span>',
-        '<span class="ml-1">PhD coursework in progress</span>',
+        '<span class="ml-1">21 Credits</span>',
     )
+    text = text.replace(
+        "CIS 5570 – Introduction to Big Data (3 Credits)",
+        "CIS 541 - Immersive Computing and Digital Twins (3 Credit Hours)</a><a class=\"chip\" href=\"http://catalog.umd.umich.edu/graduate/coursesaz/cis/\">CIS 579 - Introduction to Artificial Intelligence (3 Credits)</a><a class=\"chip\" href=\"http://catalog.umd.umich.edu/graduate/coursesaz/ece/\">ECE 574 - Advanced Software Technique in Engineering Application (3 Credits)",
+    )
+    text = text.replace(
+        "CIS 5570 – Introduction to Big Data",
+        "CIS 541 - Immersive Computing and Digital Twins</a><a class=\"chip\" href=\"http://catalog.umd.umich.edu/graduate/coursesaz/cis/\">CIS 579 - Introduction to Artificial Intelligence</a><a class=\"chip\" href=\"http://catalog.umd.umich.edu/graduate/coursesaz/ece/\">ECE 574 - Advanced Software Technique in Engineering Application",
+    )
+    text = text.replace("Counted - 15 Credits", "Counted - 21 Credits")
     text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
     return text.strip()
 
@@ -306,9 +324,10 @@ def shell(title: str, body_class: str, content: str) -> str:
 
 
 def copy_assets() -> None:
+    (OUT / "assets").mkdir(exist_ok=True)
     for name in ["index-slides", "visits", "drawings", "certificates", "projects", "experience", "languages"]:
         src = ROOT / "wwwroot" / name
-        dst = OUT / name
+        dst = OUT / "assets" / name
         if dst.exists():
             shutil.rmtree(dst)
         shutil.copytree(src, dst)
@@ -317,7 +336,7 @@ def copy_assets() -> None:
                 lower = file.with_suffix(file.suffix.lower())
                 if lower != file and not lower.exists():
                     shutil.copy2(file, lower)
-    for name in ["dev-27.png", "favicon.ico"]:
+    for name in ["favicon.ico"]:
         src = ROOT / "wwwroot" / name
         if src.exists():
             shutil.copy2(src, OUT / name)

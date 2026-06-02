@@ -274,25 +274,123 @@ li::marker {
 .carousel {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(280px, 1fr);
-  gap: 14px;
+  grid-auto-columns: minmax(290px, 0.78fr);
+  gap: 18px;
   overflow-x: auto;
-  padding: 8px 6px 18px;
+  padding: 12px 10px 24px;
   scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(86, 246, 223, 0.56) rgba(255, 255, 255, 0.08);
+}
+
+.carousel::-webkit-scrollbar {
+  height: 12px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  border: 1px solid rgba(115, 255, 225, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(9, 12, 13, 0.9);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
 }
 
 .carousel-slide {
+  position: relative;
   display: grid;
-  min-height: 390px;
+  min-height: 410px;
+  padding: 14px;
   place-items: center;
   scroll-snap-align: center;
-  border: 1px solid var(--line);
+  overflow: hidden;
+  border: 1px solid rgba(115, 255, 225, 0.34);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 32%),
+    radial-gradient(circle at 20% 14%, rgba(86, 246, 223, 0.18), transparent 14rem),
+    radial-gradient(circle at 88% 84%, rgba(158, 255, 115, 0.12), transparent 13rem),
+    rgba(10, 14, 16, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -36px 70px rgba(0, 0, 0, 0.22),
+    0 20px 46px rgba(0, 0, 0, 0.34);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.carousel-slide::before,
+.carousel-slide::after {
+  position: absolute;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  pointer-events: none;
+  content: "";
+}
+
+.carousel-slide::before {
+  top: 12px;
+  left: 12px;
+  border-top: 2px solid rgba(86, 246, 223, 0.72);
+  border-left: 2px solid rgba(86, 246, 223, 0.72);
+}
+
+.carousel-slide::after {
+  right: 12px;
+  bottom: 12px;
+  border-right: 2px solid rgba(158, 255, 115, 0.55);
+  border-bottom: 2px solid rgba(158, 255, 115, 0.55);
+}
+
+.carousel-slide > div {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+}
+
+.carousel-slide > div::after {
+  position: absolute;
+  inset: auto 8% 0;
+  height: 18%;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(ellipse at center, rgba(86, 246, 223, 0.18), transparent 68%);
+  filter: blur(10px);
+}
+
+.carousel-slide:hover {
+  border-color: rgba(86, 246, 223, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -36px 70px rgba(0, 0, 0, 0.22),
+    0 24px 58px rgba(0, 0, 0, 0.42),
+    0 0 34px rgba(86, 246, 223, 0.12);
+  transform: translateY(-3px);
 }
 
 .carousel-slide .content-image {
+  position: relative;
+  z-index: 2;
   max-height: 350px;
+  margin: 0 auto;
+  border-color: rgba(238, 248, 245, 0.18);
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.44),
+    0 0 0 1px rgba(255, 255, 255, 0.035);
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+}
+
+.carousel-slide:hover .content-image {
+  filter: saturate(1.08) contrast(1.04);
+  box-shadow:
+    0 28px 58px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(86, 246, 223, 0.16);
+  transform: scale(1.018);
 }
 
 .chip {
@@ -341,6 +439,115 @@ a.chip:hover,
 
 .link-list .card {
   width: 100%;
+}
+
+.contact-page {
+  display: grid;
+  gap: 24px;
+}
+
+.contact-heading h1 {
+  margin-bottom: 0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.contact-card {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-height: 236px;
+  margin-top: 0;
+  border-color: rgba(115, 255, 225, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 42%),
+    rgba(18, 23, 26, 0.92);
+}
+
+.contact-card-primary {
+  border-color: rgba(158, 255, 115, 0.44);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(158, 255, 115, 0.12);
+}
+
+.contact-section-title {
+  color: var(--text);
+  font: 900 0.9rem/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  text-transform: uppercase;
+}
+
+.contact-actions {
+  display: grid;
+  gap: 10px;
+}
+
+body[data-page="contact"] .nav-card-link {
+  position: relative;
+  width: 100%;
+  min-height: 58px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 0;
+  padding: 0 46px 0 18px;
+  overflow: hidden;
+  border-color: rgba(115, 255, 225, 0.36);
+  background:
+    linear-gradient(135deg, rgba(86, 246, 223, 0.18), rgba(108, 184, 255, 0.1)),
+    rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+body[data-page="contact"] .nav-card-link::after {
+  position: absolute;
+  right: 18px;
+  color: var(--cyan);
+  content: "->";
+  font: 900 1rem/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  transition: transform 160ms ease;
+}
+
+body[data-page="contact"] .nav-card-link span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+body[data-page="contact"] .nav-card-link strong {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+body[data-page="contact"] .nav-card-link:hover,
+body[data-page="contact"] .nav-card-link:focus-visible {
+  color: var(--text);
+  border-color: var(--cyan);
+  background:
+    linear-gradient(135deg, rgba(86, 246, 223, 0.28), rgba(158, 255, 115, 0.14)),
+    rgba(255, 255, 255, 0.055);
+  box-shadow: 0 14px 32px rgba(86, 246, 223, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+body[data-page="contact"] .nav-card-link:hover::after,
+body[data-page="contact"] .nav-card-link:focus-visible::after {
+  transform: translateX(4px);
+}
+
+body[data-page="contact"] .nav-card-link:focus-visible {
+  outline: 2px solid rgba(158, 255, 115, 0.72);
+  outline-offset: 3px;
+}
+
+body[data-page="contact"] .contact-link-primary {
+  border-color: rgba(158, 255, 115, 0.5);
+  background:
+    linear-gradient(135deg, rgba(158, 255, 115, 0.22), rgba(86, 246, 223, 0.14)),
+    rgba(255, 255, 255, 0.045);
 }
 
 .timeline {
@@ -454,8 +661,16 @@ hr {
 
   .site-header.nav-open .site-nav,
   .timeline-item,
+  .contact-grid,
   .stack:has(.avatar) {
     grid-template-columns: 1fr;
+  }
+
+  body[data-page="contact"] .nav-card-link {
+    min-height: 64px;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 13px 44px 13px 16px;
   }
 
   .paper {
