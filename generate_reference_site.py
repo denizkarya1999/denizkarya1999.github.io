@@ -32,7 +32,7 @@ NAV = [
     ("Awards", "awards.html"),
     ("Certificates", "certificates.html"),
     ("Extras", "extras.html"),
-    ("Resume", "https://1drv.ms/b/c/6db5c804a8c4f79d/IQDyLdw-plaLRKNoqoVLxlrSAQCte7wjPdTw1qqluVGbbr8?e=YoOnPq"),
+    ("Resume", "assets/Deniz%20K.%20Acikbas.pdf"),
     ("Contact", "contact.html"),
 ]
 
@@ -57,6 +57,8 @@ ROUTES = {
     "Certificates": "certificates.html",
     "/extras": "extras.html",
     "Extras": "extras.html",
+    "/resume": "assets/Deniz%20K.%20Acikbas.pdf",
+    "Resume": "assets/Deniz%20K.%20Acikbas.pdf",
     "/contact": "contact.html",
     "Contact": "contact.html",
 }

@@ -192,7 +192,7 @@ if (!isEmbeddedWindow) {
   let topZ = 40;
   const openWindows = new Map();
   const resumeLink = Array.from(navLinks).find((link) => link.textContent.trim() === "Resume");
-  const resumeHref = resumeLink?.getAttribute("href") || "https://1drv.ms/b/c/6db5c804a8c4f79d/IQDyLdw-plaLRKNoqoVLxlrSAQCte7wjPdTw1qqluVGbbr8?e=YoOnPq";
+  const resumeHref = resumeLink?.getAttribute("href") || "assets/Deniz%20K.%20Acikbas.pdf";
 
   function updateClock() {
     const now = new Date();
