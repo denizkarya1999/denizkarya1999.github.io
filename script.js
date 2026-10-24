@@ -451,6 +451,8 @@ if (!isEmbeddedWindow) {
     frame.title = title;
     const frameUrl = new URL(href, window.location.href);
     frameUrl.searchParams.set("desktop-window", "1");
+    // Fetch current page content instead of a cached iframe from an older deployment.
+    frameUrl.searchParams.set("_refresh", Date.now().toString(36));
     connectPageFrame(frame, win);
     frame.src = frameUrl.href;
 
