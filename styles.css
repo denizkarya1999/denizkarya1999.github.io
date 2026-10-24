@@ -365,7 +365,7 @@ body.desktop-shell .brand {
 .site-nav {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: safe center;
   gap: 7px;
   flex-wrap: nowrap;
   min-width: 0;
@@ -1746,7 +1746,7 @@ hr {
   .site-nav {
     display: flex;
     flex: 1 1 auto;
-    justify-content: center;
+    justify-content: safe center;
   }
 }
 

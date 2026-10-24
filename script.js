@@ -209,7 +209,7 @@ if (!isEmbeddedWindow) {
   }
 
   function hrefKey(href) {
-    return href.split("?")[0].split("#")[0];
+    return new URL(href, window.location.href).pathname;
   }
 
   function updateFullscreenState() {
@@ -248,12 +248,14 @@ if (!isEmbeddedWindow) {
   }
 
   function focusWindow(win) {
+    if (!win.isConnected || win.classList.contains("is-minimized")) return;
     document.querySelectorAll(".desktop-window").forEach((candidate) => {
       candidate.classList.remove("is-active-window");
     });
     win.classList.add("is-active-window");
     topZ += 1;
     win.style.zIndex = String(topZ);
+    keepWindowVisible(win);
     updateDockIndicators();
   }
 
@@ -267,8 +269,51 @@ if (!isEmbeddedWindow) {
     win.trayButton?.remove();
     win.trayButton = null;
     focusWindow(win);
+    win.tabIndex = -1;
+    win.focus({ preventScroll: true });
     updateFullscreenState();
     updateDockIndicators();
+  }
+
+  function keepWindowVisible(win) {
+    if (win.classList.contains("is-maximized") || win.classList.contains("is-minimized")) return;
+    const rect = win.getBoundingClientRect();
+    const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+    const maxTop = Math.max(44, header.getBoundingClientRect().top - rect.height - 8);
+    win.style.left = `${Math.max(8, Math.min(maxLeft, rect.left))}px`;
+    win.style.top = `${Math.max(44, Math.min(maxTop, rect.top))}px`;
+  }
+
+  function connectPageFrame(frame, win) {
+    frame.addEventListener("load", () => {
+      const frameDocument = frame.contentDocument;
+      if (!frameDocument) return;
+
+      // Events inside an iframe do not bubble to its desktop window.
+      frameDocument.addEventListener("pointerdown", () => focusWindow(win), true);
+      frameDocument.addEventListener("focusin", () => focusWindow(win));
+      frameDocument.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link || link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
+        const url = new URL(link.href);
+        if (!/^https?:$/.test(url.protocol)) return;
+
+        if (url.origin !== window.location.origin || url.pathname.toLowerCase().endsWith(".pdf")) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          return;
+        }
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (!url.pathname.endsWith(".html") || url.pathname === new URL(frameDocument.URL).pathname) return;
+
+        event.preventDefault();
+        url.searchParams.delete("desktop-window");
+        const navLink = Array.from(navLinks).find((candidate) => hrefKey(candidate.href) === url.pathname);
+        const projectItem = projectItems.find((item) => hrefKey(item.href) === url.pathname);
+        const title = projectItem?.title || navLink?.textContent.trim() || link.textContent.trim();
+        openPageWindow(url.href, title);
+      });
+    });
   }
 
   function pointInElement(event, element) {
@@ -404,7 +449,10 @@ if (!isEmbeddedWindow) {
     const frame = document.createElement("iframe");
     frame.className = "window-frame";
     frame.title = title;
-    frame.src = `${href}${href.includes("?") ? "&" : "?"}desktop-window=1`;
+    const frameUrl = new URL(href, window.location.href);
+    frameUrl.searchParams.set("desktop-window", "1");
+    connectPageFrame(frame, win);
+    frame.src = frameUrl.href;
 
     win.append(titlebar, frame);
     desktopLayer.appendChild(win);
@@ -974,6 +1022,7 @@ if (!isEmbeddedWindow) {
   window.addEventListener("resize", () => {
     closeVisitorMenu();
     closeProjectsFolder();
+    document.querySelectorAll(".desktop-window").forEach(keepWindowVisible);
   });
   makeDesktopDocumentDraggable();
 
